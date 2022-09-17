@@ -234,7 +234,7 @@ async def kickFunc(_, message: Message):
 
 
 @app.on_message(
-    filters.command(["ban", "dban", "tban"])
+    filters.command(["ban", "حظر العضو", "حظر"])
     & ~filters.edited
     & ~filters.private
 )
@@ -267,8 +267,8 @@ async def banFunc(_, message: Message):
         )
 
     msg = (
-        f"**Banned User:** {mention}\n"
-        f"**Banned By:** {message.from_user.mention if message.from_user else 'Anon'}\n"
+        f"**• العضو -> ** {mention}\n"
+        f"• بواسطه ->  {message.from_user.mention if message.from_user else 'Anon'}\n• تم حظر العضو بنجاح ✅\n"
     )
     if message.command[0][0] == "d":
         await message.reply_to_message.delete()
