@@ -78,7 +78,7 @@ def download_youtube_audio(arq_resp):
     return [title, performer, duration, audio_file, thumbnail_file]
 
 
-@app.on_message(filters.command("ytmusic") & ~filters.edited)
+@app.on_message(filters.command("ytmusic", "تحميل") & ~filters.edited)
 @capture_err
 async def music(_, message):
     global is_downloading
@@ -92,7 +92,7 @@ async def music(_, message):
         )
     is_downloading = True
     m = await message.reply_text(
-        f"Downloading {url}", disable_web_page_preview=True
+        f"• جاري تحميل طلبك -> {url}", disable_web_page_preview=True
     )
     try:
         loop = get_running_loop()

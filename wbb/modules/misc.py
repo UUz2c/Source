@@ -176,8 +176,8 @@ async def runs(_, message):
     await message.reply_text((await random_line("wbb/utils/runs.txt")))
 
 
-@app2.on_message(filters.command("id", prefixes=USERBOT_PREFIX) & SUDOERS)
-@app.on_message(filters.command("id"))
+@app2.on_message(filters.command("id", "ايدي", prefixes=USERBOT_PREFIX) & SUDOERS)
+@app.on_message(filters.command("id", "ايدي"))
 async def getid(client, message):
     chat = message.chat
     your_id = message.from_user.id

@@ -95,7 +95,7 @@ async def get_chat_info(chat, already=False):
     return [caption, photo_id]
 
 
-@app.on_message(filters.command("info") & ~filters.edited)
+@app.on_message(filters.command("info", "معلوماتي") & ~filters.edited)
 async def info_func(_, message: Message):
     if message.reply_to_message:
         user = message.reply_to_message.from_user.id
@@ -104,7 +104,7 @@ async def info_func(_, message: Message):
     elif not message.reply_to_message and len(message.command) != 1:
         user = message.text.split(None, 1)[1]
 
-    m = await message.reply_text("Processing")
+    m = await message.reply_text("• جاري التحميل 🔁")
 
     try:
         info_caption, photo_id = await get_user_info(user)
@@ -120,7 +120,7 @@ async def info_func(_, message: Message):
     os.remove(photo)
 
 
-@app.on_message(filters.command("chat_info") & ~filters.edited)
+@app.on_message(filters.command("chat_info", "معلومات الجروب", "معلومات المجموعه") & ~filters.edited)
 async def chat_info_func(_, message: Message):
     try:
         if len(message.command) > 2:
@@ -133,7 +133,7 @@ async def chat_info_func(_, message: Message):
         elif len(message.command) == 2:
             chat = message.text.split(None, 1)[1]
 
-        m = await message.reply_text("Processing")
+        m = await message.reply_text("• جاري التحميل 🔁")
 
         info_caption, photo_id = await get_chat_info(chat)
         if not photo_id:

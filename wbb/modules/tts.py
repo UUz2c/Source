@@ -43,13 +43,13 @@ def convert(text):
     return audio
 
 
-@app.on_message(filters.command("tts") & ~filters.edited)
+@app.on_message(filters.command("tts", "انطق") & ~filters.edited)
 async def text_to_speech(_, message: Message):
     if not message.reply_to_message:
-        return await message.reply_text("Reply to some text ffs.")
+        return await message.reply_text("• عذرآ قم برد علي الرساله ليتم النطق")
     if not message.reply_to_message.text:
-        return await message.reply_text("Reply to some text ffs.")
-    m = await message.reply_text("Processing")
+        return await message.reply_text("• عذرآ قم برد علي الرساله ليتم النطق")
+    m = await message.reply_text("• جاري التحويل 🔁")
     text = message.reply_to_message.text
     try:
         loop = get_running_loop()

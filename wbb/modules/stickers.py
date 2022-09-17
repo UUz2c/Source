@@ -80,7 +80,7 @@ async def sticker_id(_, message: Message):
     await message.reply_text(f"`{reply.sticker.file_id}`")
 
 
-@app.on_message(filters.command("get_sticker") & ~filters.edited)
+@app.on_message(filters.command("get_sticker", "") & ~filters.edited)
 @capture_err
 async def sticker_image(_, message: Message):
     r = message.reply_to_message

@@ -82,7 +82,7 @@ async def set_user_title(_, message):
 
 
 @app.on_message(
-    filters.command("set_chat_photo")
+    filters.command("set_chat_photo", "تغيير صوره الجروب", "تغيير صوره المجموعه")
     & ~filters.private
     & ~filters.edited
 )
@@ -92,7 +92,7 @@ async def set_chat_photo(_, message):
 
     if not reply:
         return await message.reply_text(
-            "Reply to a photo to set it as chat_photo"
+            "• عذرآ قم برد علي الصوره ليتم وضعها"
         )
 
     file = reply.document or reply.photo
@@ -106,5 +106,5 @@ async def set_chat_photo(_, message):
 
     photo = await reply.download()
     await message.chat.set_photo(photo)
-    await message.reply_text("Successfully Changed Group Photo")
+    await message.reply_text("• تم تغيير صورة المجموعة بنجاح ✅")
     os.remove(photo)
