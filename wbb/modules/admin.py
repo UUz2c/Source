@@ -36,6 +36,7 @@ from pyrogram.types import (
 
 from wbb import BOT_ID, SUDOERS, app, log
 from wbb.core.decorators.errors import capture_err
+from wbb.filters import command
 from wbb.core.keyboard import ikb
 from wbb.utils.dbfunctions import (
     add_warn,
@@ -150,7 +151,7 @@ async def admin_cache_func(_, cmu: ChatMemberUpdated):
 # Purge Messages
 
 
-@app.on_message(filters.command("purge") & ~filters.edited & ~filters.private)
+@app.on_message(command("purge") & ~edited & ~private)
 @adminsOnly("can_delete_messages")
 async def purgeFunc(_, message: Message):
     repliedmsg = message.reply_to_message
@@ -200,7 +201,7 @@ async def purgeFunc(_, message: Message):
 
 
 @app.on_message(
-    filters.command(["kick", "dkick"]) & ~filters.edited & ~filters.private
+    command(["kick", "dkick"]) & ~edited & ~private
 )
 @adminsOnly("can_restrict_members")
 async def kickFunc(_, message: Message):
@@ -234,9 +235,9 @@ async def kickFunc(_, message: Message):
 
 
 @app.on_message(
-    filters.command(["ban", "حظر العضو", "حظر"])
-    & ~filters.edited
-    & ~filters.private
+    command(["ban", "حظر العضو", "حظر"])
+    & ~edited
+    & ~private
 )
 @adminsOnly("can_restrict_members")
 async def banFunc(_, message: Message):
@@ -298,7 +299,7 @@ async def banFunc(_, message: Message):
 # Unban members
 
 
-@app.on_message(filters.command("unban") & ~filters.edited & ~filters.private)
+@app.on_message(command("unban") & ~edited & ~private)
 @adminsOnly("can_restrict_members")
 async def unban_func(_, message: Message):
     # we don't need reasons for unban, also, we
@@ -327,7 +328,7 @@ async def unban_func(_, message: Message):
 
 
 @app.on_message(
-    SUDOERS & filters.command("listban") & ~filters.edited & ~filters.private
+    SUDOERS & command("listban") & ~edited & ~private
 )
 async def list_ban_(c, message: Message):
     userid, msglink_reason = await extract_user_and_reason(message)
@@ -393,7 +394,7 @@ async def list_ban_(c, message: Message):
 
 
 @app.on_message(
-    SUDOERS & filters.command("listunban") & ~filters.edited & ~filters.private
+    SUDOERS & command("listunban") & ~edited & ~private
 )
 async def list_unban_(c, message: Message):
     userid, msglink = await extract_user_and_reason(message)
@@ -441,7 +442,7 @@ async def list_unban_(c, message: Message):
 # Delete messages
 
 
-@app.on_message(filters.command("del") & ~filters.edited & ~filters.private)
+@app.on_message(command("del") & ~edited & ~private)
 @adminsOnly("can_delete_messages")
 async def deleteFunc(_, message: Message):
     if not message.reply_to_message:
@@ -454,9 +455,9 @@ async def deleteFunc(_, message: Message):
 
 
 @app.on_message(
-    filters.command(["promote", "fullpromote"])
-    & ~filters.edited
-    & ~filters.private
+    command(["promote", "fullpromote"])
+    & ~edited
+    & ~private
 )
 @adminsOnly("can_promote_members")
 async def promoteFunc(_, message: Message):
@@ -500,7 +501,7 @@ async def promoteFunc(_, message: Message):
 # Demote Member
 
 
-@app.on_message(filters.command("demote") & ~filters.edited & ~filters.private)
+@app.on_message(command("demote") & ~edited & ~private)
 @adminsOnly("can_promote_members")
 async def demote(_, message: Message):
     user_id = await extract_user(message)
@@ -531,7 +532,7 @@ async def demote(_, message: Message):
 
 
 @app.on_message(
-    filters.command(["pin", "unpin"]) & ~filters.edited & ~filters.private
+    command(["pin", "unpin"]) & ~edited & ~private
 )
 @adminsOnly("can_pin_messages")
 async def pin(_, message: Message):
@@ -558,7 +559,7 @@ async def pin(_, message: Message):
 
 
 @app.on_message(
-    filters.command(["mute", "tmute"]) & ~filters.edited & ~filters.private
+    command(["mute", "tmute"]) & ~edited & ~private
 )
 @adminsOnly("can_restrict_members")
 async def mute(_, message: Message):
@@ -611,7 +612,7 @@ async def mute(_, message: Message):
 # Unmute members
 
 
-@app.on_message(filters.command("unmute") & ~filters.edited & ~filters.private)
+@app.on_message(command("unmute") & ~edited & ~private)
 @adminsOnly("can_restrict_members")
 async def unmute(_, message: Message):
     user_id = await extract_user(message)
@@ -626,9 +627,9 @@ async def unmute(_, message: Message):
 
 
 @app.on_message(
-    filters.command("ban_ghosts")
-    & ~filters.private
-    & ~filters.edited
+    command("ban_ghosts")
+    & ~private
+    & ~edited
 )
 @adminsOnly("can_restrict_members")
 async def ban_deleted_accounts(_, message: Message):
@@ -653,7 +654,7 @@ async def ban_deleted_accounts(_, message: Message):
 
 
 @app.on_message(
-    filters.command(["warn", "dwarn"]) & ~filters.edited & ~filters.private
+    command(["warn", "dwarn"]) & ~edited & ~private
 )
 @adminsOnly("can_restrict_members")
 async def warn_user(_, message: Message):
@@ -702,7 +703,7 @@ async def warn_user(_, message: Message):
         await add_warn(chat_id, await int_to_alpha(user_id), warn)
 
 
-@app.on_callback_query(filters.regex("unwarn_"))
+@app.on_callback_query(regex("unwarn_"))
 async def remove_warning(_, cq: CallbackQuery):
     from_user = cq.from_user
     chat_id = cq.message.chat.id
@@ -732,7 +733,7 @@ async def remove_warning(_, cq: CallbackQuery):
 
 
 @app.on_message(
-    filters.command("rmwarns") & ~filters.edited & ~filters.private
+    command("rmwarns") & ~edited & ~private
 )
 @adminsOnly("can_restrict_members")
 async def remove_warnings(_, message: Message):
@@ -756,7 +757,7 @@ async def remove_warnings(_, message: Message):
 # Warns
 
 
-@app.on_message(filters.command("warns") & ~filters.edited & ~filters.private)
+@app.on_message(command("warns") & ~edited & ~private)
 @capture_err
 async def check_warns(_, message: Message):
     user_id = await extract_user(message)
@@ -776,11 +777,11 @@ async def check_warns(_, message: Message):
 
 @app.on_message(
     (
-            filters.command("report")
-            | filters.command(["admins", "admin"], prefixes="@")
+            command("report")
+            | command(["admins", "admin"], prefixes="@")
     )
-    & ~filters.edited
-    & ~filters.private
+    & ~edited
+    & ~private
 )
 @capture_err
 async def report_user(_, message):
@@ -822,7 +823,7 @@ async def report_user(_, message):
     await message.reply_to_message.reply_text(text)
 
 
-@app.on_message(filters.command("invite") & ~filters.edited)
+@app.on_message(command("invite") & ~edited)
 @adminsOnly("can_invite_users")
 async def invite(_, message):
     if message.chat.type in ["group", "supergroup"]:
